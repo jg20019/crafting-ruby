@@ -1,5 +1,7 @@
 ## 05/01/2022
 * Finished 4.6
+* Made it to the end of 4.7
+* Fixing bug where it doesn't read identifiers correctly
 
 ## 04/30/2022
 * Started creating main Lox class

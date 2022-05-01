@@ -4,6 +4,25 @@ require_relative "token"
 class Scanner
   attr_reader :source, :tokens, :start, :current, :line, :lox
 
+  @@keywords = {
+    "and"    => TokenType::AND,
+    "class"  => TokenType::CLASS,
+    "else"   => TokenType::ELSE,
+    "false"  => TokenType::FALSE,
+    "for"    => TokenType::FOR,
+    "fun"    => TokenType::FUN,
+    "if"     => TokenType::IF,
+    "nil"    => TokenType::NIL,
+    "or"     => TokenType::OR,
+    "print"  => TokenType::PRINT,
+    "return" => TokenType::RETURN,
+    "super"  => TokenType::SUPER,
+    "this"   => TokenType::THIS,
+    "true"   => TokenType::TRUE,
+    "var"    => TokenType::VAR,
+    "while"  => TokenType::WHILE
+  }
+
   def initialize(source, lox)
     @source = source
     @tokens = []
@@ -63,6 +82,8 @@ class Scanner
       string
     when /\d/
       number
+    when /[_a-zA-Z]/
+      identifier
     when "\n"
       @line += 1
     when /\s/
@@ -72,8 +93,28 @@ class Scanner
     end
   end
 
+  def alpha?(ch)
+    !!ch.match(/[_a-zA-Z]/)
+  end
+
+  def alpha_numeric?(ch)
+    !!ch.match(/\w/)
+  end
+
   def digit?(ch)
     !!ch.match(/\d/)
+  end
+
+  def identifier
+    advance while alpha_numeric?(peek)
+
+    text = @source[@start, @current]
+    token_type = @@keywords.fetch(text, TokenType::IDENTIFIER)
+    if token_type == TokenType::IDENTIFIER 
+      addToken(token_type, text)
+    else
+      addToken(token_type)
+    end
   end
 
   def number
@@ -88,6 +129,7 @@ class Scanner
     addToken(TokenType::NUMBER, 
              @source[@start..@current-1].to_f)    
   end
+
   def string
     until peek == '"' || at_end?
       @line += 1 if peek == '\n'
@@ -123,7 +165,6 @@ class Scanner
     @current += 1
     true
   end
-
 
   def advance
     ch = source[@current]
