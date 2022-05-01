@@ -59,18 +59,63 @@ class Scanner
       else
         addToken(TokenType::SLASH)
       end
+    when '"'
+      string
+    when /\d/
+      number
     when "\n"
       @line += 1
-    when ch.match(/\s/)
+    when /\s/
       nil
     else
       @lox.error(@line, "Unexpected character: '#{ch}'")
     end
   end
+
+  def digit?(ch)
+    !!ch.match(/\d/)
+  end
+
+  def number
+    advance while digit?(peek)
+
+    if peek == '.' && digit?(peek_next) 
+      # Consume the .
+      advance
+      advance while digit?(peek)
+    end
+
+    addToken(TokenType::NUMBER, 
+             @source[@start..@current-1].to_f)    
+  end
+  def string
+    until peek == '"' || at_end?
+      @line += 1 if peek == '\n'
+      advance
+    end
+
+    if at_end? 
+      @lox.error(line, "Unterminate string")
+      return
+    end
+
+    # The closing "
+    advance
+  
+    # Trim the surrounding quotes.
+    value = @source[@start + 1, @current - 2]
+    addToken(TokenType::STRING, value)
+  end
   
   def peek()
     return '\0' if at_end? 
     @source[@current]
+  end
+
+  def peek_next()
+    index = @current + 1
+    return '\0' if index > @source.length
+    @source[index]
   end
 
   def match?(expected)

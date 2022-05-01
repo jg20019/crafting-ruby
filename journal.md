@@ -1,5 +1,7 @@
+## 05/01/2022
+* Finished 4.6
 
-## 4/30/2022
+## 04/30/2022
 * Started creating main Lox class
 * Finished scaffolding Lox and Scanner
 * Starting section 4.2
