@@ -1,6 +1,7 @@
 ## 05/02/2022
 * Fixed bug when scanning identifiers
-* 
+* Finished 5.2 and generated Expr classes 
+
 ## 05/01/2022
 * Finished 4.6
 * Made it to the end of 4.7
