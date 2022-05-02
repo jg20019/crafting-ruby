@@ -1,3 +1,6 @@
+## 05/02/2022
+* Fixed bug when scanning identifiers
+* 
 ## 05/01/2022
 * Finished 4.6
 * Made it to the end of 4.7
