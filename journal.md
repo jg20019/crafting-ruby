@@ -1,5 +1,7 @@
 ## 05/03/2022
 * Finished 5.3
+* [TODO] Need to add initialize when generating classes
+* Finished 5.4
 
 ## 05/02/2022
 * Fixed bug when scanning identifiers
