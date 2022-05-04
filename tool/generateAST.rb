@@ -2,8 +2,12 @@
 def defineAST(output_dir, base_name, types)
   writer = File.new("#{output_dir}/#{base_name}.rb", "w")
 
-  writer.puts("class #{base_name} end")
+  writer.puts("class #{base_name.capitalize}")
+  writer.puts("  def accept(visitor) end")
+  writer.puts("end")
   writer.puts
+
+  defineVisitor(writer, base_name, types)
 
   types.each do |type|
     class_name = type.split(":")[0].strip
@@ -18,7 +22,21 @@ def defineType(writer, base_name, class_name, fields)
   accessors = fields.split.collect { |f| ":#{f}" }.join(", ")
   writer.puts("class #{class_name} < #{base_name}")
   writer.puts("    attr_accessor #{accessors}")
+  writer.puts("    def accept(visitor)")
+  writer.puts("        visitor.visit#{class_name}#{base_name.capitalize}(self)")
+  writer.puts("    end")
   writer.puts("end")
+  writer.puts
+end
+
+def defineVisitor(writer, base_name, types)
+  writer.puts("class Visitor")
+  types.each do |type| 
+    type_name = type.split(':')[0].strip
+    writer.puts("    def  visit#{type_name}#{base_name.capitalize} (#{base_name.downcase}) end")
+  end
+  writer.puts("end")
+  writer.puts
 end
 
 if ARGV.length != 1
@@ -27,7 +45,7 @@ if ARGV.length != 1
 end
 
 outputDir = ARGV[0]
-defineAST(outputDir, "Expr", [
+defineAST(outputDir, "expr", [
   "Binary   : left operator right",
   "Grouping : expression",
   "Literal  : value",
