@@ -1,8 +1,9 @@
 
 def defineAST(output_dir, base_name, types)
   writer = File.new("#{output_dir}/#{base_name}.rb", "w")
+  base_name = base_name.capitalize
 
-  writer.puts("class #{base_name.capitalize}")
+  writer.puts("class #{base_name}")
   writer.puts("  def accept(visitor) end")
   writer.puts("end")
   writer.puts
@@ -23,7 +24,7 @@ def defineType(writer, base_name, class_name, fields)
   writer.puts("class #{class_name} < #{base_name}")
   writer.puts("    attr_accessor #{accessors}")
   writer.puts("    def accept(visitor)")
-  writer.puts("        visitor.visit#{class_name}#{base_name.capitalize}(self)")
+  writer.puts("        visitor.visit#{class_name}#{base_name}(self)")
   writer.puts("    end")
   writer.puts("end")
   writer.puts
@@ -33,7 +34,9 @@ def defineVisitor(writer, base_name, types)
   writer.puts("class Visitor")
   types.each do |type| 
     type_name = type.split(':')[0].strip
-    writer.puts("    def  visit#{type_name}#{base_name.capitalize} (#{base_name.downcase}) end")
+    writer.puts("    def  visit#{type_name}#{base_name} (#{base_name.downcase})")
+    writer.puts("        raise NotImplementedError")
+    writer.puts("    end")
   end
   writer.puts("end")
   writer.puts

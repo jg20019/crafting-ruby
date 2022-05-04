@@ -3,34 +3,42 @@ class Expr
 end
 
 class Visitor
-    def  visitBinaryExpr (expr) end
-    def  visitGroupingExpr (expr) end
-    def  visitLiteralExpr (expr) end
-    def  visitUnaryExpr (expr) end
+    def  visitBinaryExpr (expr)
+        raise NotImplementedError
+    end
+    def  visitGroupingExpr (expr)
+        raise NotImplementedError
+    end
+    def  visitLiteralExpr (expr)
+        raise NotImplementedError
+    end
+    def  visitUnaryExpr (expr)
+        raise NotImplementedError
+    end
 end
 
-class Binary < expr
+class Binary < Expr
     attr_accessor :left, :operator, :right
     def accept(visitor)
         visitor.visitBinaryExpr(self)
     end
 end
 
-class Grouping < expr
+class Grouping < Expr
     attr_accessor :expression
     def accept(visitor)
         visitor.visitGroupingExpr(self)
     end
 end
 
-class Literal < expr
+class Literal < Expr
     attr_accessor :value
     def accept(visitor)
         visitor.visitLiteralExpr(self)
     end
 end
 
-class Unary < expr
+class Unary < Expr
     attr_accessor :operator, :right
     def accept(visitor)
         visitor.visitUnaryExpr(self)
