@@ -1,3 +1,6 @@
+## 05/04/2022
+* Started writing parser - just finished factor method
+
 ## 05/03/2022
 * Finished 5.3
 * [TODO] Need to add initialize when generating classes
