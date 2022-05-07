@@ -1,12 +1,16 @@
 require_relative './token_type'
 require_relative './expr'
 
+class ParseError < StandardError
+end
+
 class Parser
   attr_accessor :tokens, :current
   
-  def initialize(tokens)
+  def initialize(tokens, lox)
     @tokens = tokens
     @current = 0
+    @lox = lox
   end
 
   def expression
@@ -109,5 +113,13 @@ class Parser
     false
   end
 
+  def consume(type, message) 
+    return advance if (check?(type))
+    raise error(peek, message)
+  end
 
+  def error(token, message)
+    @lox.parseError(token, message)
+    return ParseError.new
+  end
 end

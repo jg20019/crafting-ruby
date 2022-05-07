@@ -1,5 +1,6 @@
 #!/home/jgibson/.asdf/shims/ruby
 
+require_relative 'token_type.rb'
 require_relative 'scanner.rb'
 
 class Lox
@@ -47,6 +48,14 @@ class Lox
   def Lox.report(line, where, message)
     puts "[line #{line}] Error #{where}: #{message}"
     @@hadError = true
+  end
+
+  def Lox.parseError(token, message)
+    if (token.type == TokenType::EOF)
+      report(token.line, " at end", message)
+    else
+      report(token.line, " at '#{token.lexeme}'", message)
+    end
   end
 end
 
