@@ -1,7 +1,9 @@
 #!/home/jgibson/.asdf/shims/ruby
 
-require_relative 'token_type.rb'
-require_relative 'scanner.rb'
+require_relative 'token_type'
+require_relative 'scanner'
+require_relative 'parser'
+require_relative 'ast_printer'  
 
 class Lox
   @@hadError = false
@@ -19,9 +21,11 @@ class Lox
   def Lox.run(source)
     scanner = Scanner.new(source, self)
     tokens = scanner.scanTokens
-    tokens.each do |token| 
-      puts token
-    end
+    parser = Parser.new(tokens, self)
+    expression = parser.parse
+    
+    return if @@hadError
+    puts AstPrinter.new.print(expression)
   end
 
   def Lox.runFile(path)

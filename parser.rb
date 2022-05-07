@@ -13,6 +13,14 @@ class Parser
     @lox = lox
   end
 
+  def parse
+    begin
+      expression
+    rescue ParseError
+      nil
+    end
+  end
+
   def expression
     equality
   end
@@ -68,8 +76,8 @@ class Parser
   
   def primary
     return Literal.new(false) if (match(TokenType::FALSE)) 
-    return Literal.new(true) if (match(TokenType::TRUE)) 
-    return Literal.new(nil) if (match(TokenType::NIL)) 
+    return Literal.new(true)  if (match(TokenType::TRUE)) 
+    return Literal.new(nil)   if (match(TokenType::NIL)) 
 
     if (match(TokenType::NUMBER, TokenType::STRING)) 
       return Literal.new(previous.literal)
@@ -80,6 +88,8 @@ class Parser
       consume(TokenType::RIGHT_PAREN, "Expect ')' after expression.")
       return Grouping.new(expr)
     end
+
+    raise error(peek, "Expect expression.")
   end
 
   def at_end?
@@ -101,16 +111,16 @@ class Parser
 
 
   def check?(type) 
-    return false at_end?
+    return false if at_end?
     peek.type == type
   end
 
   def match(*types)
     if types.any? {|type| check?(type)}
       advance
-      true
+      return true
     end
-    false
+    return false
   end
 
   def consume(type, message) 
@@ -121,5 +131,32 @@ class Parser
   def error(token, message)
     @lox.parseError(token, message)
     return ParseError.new
+  end
+
+  def synchronize
+    advance
+    while (!at_end?)
+      return if previous.type == TokenType::SEMICOLON
+
+      case peek.type
+      when TokenType::CLASS 
+          return
+      when TokenType::FUN 
+          return
+      when TokenType::VAR 
+          return
+      when TokenType::FOR 
+          return
+      when TokenType::IF 
+          return
+      when TokenType::WHILE 
+          return
+      when TokenType::PRINT 
+          return
+      when TokenType::RETURN 
+          return
+      end
+      advance
+    end
   end
 end
