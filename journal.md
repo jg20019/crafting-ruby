@@ -1,4 +1,8 @@
+## 05/06/2022
+* Finished 6.2
+
 ## 05/04/2022
+* Finished 6.1
 * Started writing parser - just finished factor method
 
 ## 05/03/2022

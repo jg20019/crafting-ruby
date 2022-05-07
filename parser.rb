@@ -53,6 +53,31 @@ class Parser
     expr
   end
 
+  def unary
+    if (match(TokenType::BANG, TokenType::MINUS))
+      operator = previous
+      right = unary
+      return Unary.new(operator, right)
+    end
+    return primary
+  end
+  
+  def primary
+    return Literal.new(false) if (match(TokenType::FALSE)) 
+    return Literal.new(true) if (match(TokenType::TRUE)) 
+    return Literal.new(nil) if (match(TokenType::NIL)) 
+
+    if (match(TokenType::NUMBER, TokenType::STRING)) 
+      return Literal.new(previous.literal)
+    end
+
+    if (match(TokenType::LEFT_PAREN)) 
+      expr = expression
+      consume(TokenType::RIGHT_PAREN, "Expect ')' after expression.")
+      return Grouping.new(expr)
+    end
+  end
+
   def at_end?
     peek.type == TokenType::EOF
   end
