@@ -3,16 +3,16 @@ class Expr
 end
 
 class Visitor
-    def  visitBinaryExpr (expr)
+    def  visitBinaryExpr(expr)
         raise NotImplementedError
     end
-    def  visitGroupingExpr (expr)
+    def  visitGroupingExpr(expr)
         raise NotImplementedError
     end
-    def  visitLiteralExpr (expr)
+    def  visitLiteralExpr(expr)
         raise NotImplementedError
     end
-    def  visitUnaryExpr (expr)
+    def  visitUnaryExpr(expr)
         raise NotImplementedError
     end
 end

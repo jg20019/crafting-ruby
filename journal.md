@@ -1,6 +1,8 @@
 ## 05/07/2022
 * Finished 6.3
 * Finished Chapter 6
+* Started Chapter 7
+* Finished 7.1-7.2
 
 ## 05/06/2022
 * Finished 6.2
