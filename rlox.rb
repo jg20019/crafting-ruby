@@ -3,10 +3,13 @@
 require_relative 'token_type'
 require_relative 'scanner'
 require_relative 'parser'
-require_relative 'ast_printer'  
+require_relative 'interpreter'  
 
 class Lox
   @@hadError = false
+  @@hadRuntimeError = false
+  @@interpreter = Interpreter.new(self)
+
   def Lox.main
     if ARGV.length > 1 
       puts "Usage: rlox [script]"
@@ -25,7 +28,7 @@ class Lox
     expression = parser.parse
     
     return if @@hadError
-    puts AstPrinter.new.print(expression)
+    @@interpreter.interpret(expression)
   end
 
   def Lox.runFile(path)
@@ -33,6 +36,7 @@ class Lox
     content = file.read()
     self.run(content)
     exit(65) if @@hadError
+    exit(70) if @@hadRuntimeError
   end
 
   def Lox.runPrompt
@@ -60,6 +64,11 @@ class Lox
     else
       report(token.line, " at '#{token.lexeme}'", message)
     end
+  end
+
+  def Lox.runtimeError(error) 
+    STDERR.puts("#{error.message} \n[line #{error.token.line}]")
+    @@hadRuntimeError = true
   end
 end
 

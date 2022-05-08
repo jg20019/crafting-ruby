@@ -1,3 +1,7 @@
+## 05/08/2022
+* Finished 7.3-7.4
+* TODO Printing strings has an extra " at the end of the line
+
 ## 05/07/2022
 * Finished 6.3
 * Finished Chapter 6
