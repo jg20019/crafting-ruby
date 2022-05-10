@@ -149,7 +149,7 @@ class Scanner
     advance
   
     # Trim the surrounding quotes.
-    value = @source[@start + 1, @current - 2]
+    value = @source[@start + 1..@current - 2]
     addToken(TokenType::STRING, value)
   end
   

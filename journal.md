@@ -1,3 +1,8 @@
+## 05/09/2022
+* Fixed bug with scanning strings
+* Make dividing by zero, a runtime error
+* Fix bug in adding code
+
 ## 05/08/2022
 * Finished 7.3-7.4
 * TODO Printing strings has an extra " at the end of the line

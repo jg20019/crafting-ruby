@@ -30,6 +30,9 @@ class Interpreter < Visitor
       return left - right
     when TokenType::SLASH
       checkNumberOperands(expr.operator, left, right)
+      if right == 0
+        raise LoxRuntimeError.new(expr.operator, "Can't divide by zero")
+      end
       return left / right
     when TokenType::STAR 
       checkNumberOperands(expr.operator, left, right)
@@ -41,7 +44,7 @@ class Interpreter < Visitor
       if left.is_a?(String) && right.is_a?(String)
         return left + right
       end
-      raise LoxRuntimeError.new(operator, 
+      raise LoxRuntimeError.new(expr.operator, 
         "Operands must be two numbers or two strings.")
     when TokenType::GREATER
       checkNumberOperands(expr.operator, left, right)
