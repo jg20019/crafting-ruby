@@ -2,6 +2,9 @@
 * Fixed bug with scanning strings
 * Make dividing by zero, a runtime error
 * Fix bug in adding code
+* Started working on extending Interpreter to handle stmts. 
+* Next: Find a way to implement interfaces in Ruby. Currently, 
+  looking at modules
 
 ## 05/08/2022
 * Finished 7.3-7.4

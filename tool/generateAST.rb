@@ -54,3 +54,8 @@ defineAST(outputDir, "expr", [
   "Literal  : value",
   "Unary    : operator right"
 ])
+
+defineAST(outputDir, "stmt", [
+  "Expression : expression",
+  "Print      : expression"
+])

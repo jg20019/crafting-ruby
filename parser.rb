@@ -1,5 +1,7 @@
-require_relative './token_type'
-require_relative './expr'
+require_relative 'token_type'
+require_relative 'expr'
+require_relative 'stmt'
+
 
 class ParseError < StandardError
 end
@@ -14,11 +16,31 @@ class Parser
   end
 
   def parse
-    begin
-      expression
-    rescue ParseError
-      nil
+    statements = []
+    while (!at_end?) 
+      statements << statement
     end
+    statements
+  end
+
+  def statement
+    if (match(TokenType::PRINT)) 
+      printStatement
+    else
+      expressionStatement
+    end
+  end
+  
+  def printStatement
+    value = expression
+    consume(TokenType::SEMICOLON, "Expect ';' after value.")
+    Print.new(value)
+  end
+
+  def expressionStatement
+    expr = expression
+    consume(TokenType::SEMICOLON, "Expect ';' after expression.")
+    Expression.new(expr)
   end
 
   def expression
