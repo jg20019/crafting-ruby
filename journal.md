@@ -1,3 +1,8 @@
+## 05/11/2022
+* Converted classes to modules
+* Added print statements to interpreter
+* Finished 8.1
+
 ## 05/09/2022
 * Fixed bug with scanning strings
 * Make dividing by zero, a runtime error

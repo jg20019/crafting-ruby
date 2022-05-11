@@ -107,13 +107,11 @@ class Scanner
 
   def identifier
     while alpha_numeric?(peek)
-      puts peek
       advance
     end
 
     text = @source[@start..@current-1]
     token_type = @@keywords.fetch(text, TokenType::IDENTIFIER)
-    puts "'#{text}'"
     if token_type == TokenType::IDENTIFIER 
       addToken(token_type, text)
     else

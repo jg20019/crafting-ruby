@@ -2,7 +2,8 @@ require_relative "./expr"
 require_relative "./token_type"
 require_relative "./token"
 
-class AstPrinter < Visitor
+class AstPrinter 
+  include ExprVisitor
   def print(expr)
     expr.accept(self)
   end

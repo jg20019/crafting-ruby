@@ -3,15 +3,19 @@ require_relative "./token"
 require_relative "./expr"
 require_relative "./runtime_error"
 
-class Interpreter < Visitor
+class Interpreter
+  include ExprVisitor
+  include StmtVisitor 
+
   def initialize(lox)
     @lox = lox
   end
 
-  def interpret(expr)
+  def interpret(statements)
     begin
-      value = evaluate(expr)
-      puts value.to_s
+      statements.each do |stmt|
+        execute(stmt)
+      end
     rescue LoxRuntimeError => e
       @lox.runtimeError(e)
     end
@@ -19,6 +23,19 @@ class Interpreter < Visitor
 
   def evaluate(expr)
     expr.accept(self)
+  end
+
+  def execute(stmt)
+    stmt.accept(self)
+  end
+
+  def visitExpressionStmt(stmt)
+    evaluate(stmt.expression)
+  end
+
+  def visitPrintStmt(stmt) 
+    value = evaluate(stmt.expression)
+    puts(value.to_s)
   end
 
   def visitBinaryExpr(expr)

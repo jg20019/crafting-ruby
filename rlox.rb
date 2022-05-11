@@ -25,10 +25,10 @@ class Lox
     scanner = Scanner.new(source, self)
     tokens = scanner.scanTokens
     parser = Parser.new(tokens, self)
-    expression = parser.parse
+    statements = parser.parse
     
     return if @@hadError
-    @@interpreter.interpret(expression)
+    @@interpreter.interpret(statements)
   end
 
   def Lox.runFile(path)

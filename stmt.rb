@@ -1,8 +1,4 @@
-class Stmt
-  def accept(visitor) end
-end
-
-class Visitor
+module StmtVisitor
     def  visitExpressionStmt (stmt)
         raise NotImplementedError
     end
@@ -11,15 +7,23 @@ class Visitor
     end
 end
 
-class Expression < Stmt
+class Expression
     attr_accessor :expression
+    def initialize(expression)
+        @expression = expression
+    end
+
     def accept(visitor)
         visitor.visitExpressionStmt(self)
     end
 end
 
-class Print < Stmt
+class Print
     attr_accessor :expression
+    def initialize(expression)
+        @expression = expression
+    end
+
     def accept(visitor)
         visitor.visitPrintStmt(self)
     end
