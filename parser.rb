@@ -18,9 +18,21 @@ class Parser
   def parse
     statements = []
     while (!at_end?) 
-      statements << statement
+      statements << declaration
     end
     statements
+  end
+
+  def declaration
+    begin
+      if (match(TokenType::VAR))
+        return varDeclaration
+      end
+      return statement
+    rescue ParseError
+      synchronize
+      return nil
+    end
   end
 
   def statement
@@ -35,6 +47,18 @@ class Parser
     value = expression
     consume(TokenType::SEMICOLON, "Expect ';' after value.")
     Print.new(value)
+  end
+
+  def varDeclaration
+    name = consume(TokenType::IDENTIFIER, "Expect variable name.")
+
+    initializer = nil
+    if (match(TokenType::EQUAL)) 
+      initializer = expression
+    end
+
+    consume(TokenType::SEMICOLON, "Expect ';' after variable declartion.")
+    Var.new(name, initializer)
   end
 
   def expressionStatement
@@ -103,6 +127,10 @@ class Parser
 
     if (match(TokenType::NUMBER, TokenType::STRING)) 
       return Literal.new(previous.literal)
+    end
+
+    if (match(TokenType::IDENTIFIER))
+      return Variable.new(previous)
     end
 
     if (match(TokenType::LEFT_PAREN)) 

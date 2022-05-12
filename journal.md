@@ -1,3 +1,7 @@
+## 05/12/2022
+* Add varDeclaration statements to parser
+* Started working on the environment
+
 ## 05/11/2022
 * Converted classes to modules
 * Added print statements to interpreter

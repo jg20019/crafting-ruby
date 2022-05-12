@@ -5,6 +5,9 @@ module StmtVisitor
     def  visitPrintStmt (stmt)
         raise NotImplementedError
     end
+    def  visitVarStmt (stmt)
+        raise NotImplementedError
+    end
 end
 
 class Expression
@@ -26,6 +29,18 @@ class Print
 
     def accept(visitor)
         visitor.visitPrintStmt(self)
+    end
+end
+
+class Var
+    attr_accessor :name, :initializer
+    def initialize(name, initializer)
+        @name = name
+        @initializer = initializer
+    end
+
+    def accept(visitor)
+        visitor.visitVarStmt(self)
     end
 end
 

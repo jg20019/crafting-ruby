@@ -56,10 +56,12 @@ defineAST(outputDir, "expr", [
   "Binary   : left operator right",
   "Grouping : expression",
   "Literal  : value",
-  "Unary    : operator right"
+  "Unary    : operator right",
+  "Variable : name",
 ])
 
 defineAST(outputDir, "stmt", [
   "Expression : expression",
-  "Print      : expression"
+  "Print      : expression",
+  "Var        : name initializer"
 ])

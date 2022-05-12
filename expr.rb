@@ -11,6 +11,9 @@ module ExprVisitor
     def  visitUnaryExpr (expr)
         raise NotImplementedError
     end
+    def  visitVariableExpr (expr)
+        raise NotImplementedError
+    end
 end
 
 class Binary
@@ -57,6 +60,17 @@ class Unary
 
     def accept(visitor)
         visitor.visitUnaryExpr(self)
+    end
+end
+
+class Variable
+    attr_accessor :name
+    def initialize(name)
+        @name = name
+    end
+
+    def accept(visitor)
+        visitor.visitVariableExpr(self)
     end
 end
 
