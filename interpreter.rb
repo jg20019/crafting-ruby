@@ -2,6 +2,7 @@ require_relative "./token_type"
 require_relative "./token"
 require_relative "./expr"
 require_relative "./runtime_error"
+require_relative "./environment"
 
 class Interpreter
   include ExprVisitor
@@ -9,6 +10,7 @@ class Interpreter
 
   def initialize(lox)
     @lox = lox
+    @environment = Environment.new
   end
 
   def interpret(statements)
@@ -36,6 +38,15 @@ class Interpreter
   def visitPrintStmt(stmt) 
     value = evaluate(stmt.expression)
     puts(value.to_s)
+  end
+
+  def visitVarStmt(stmt)
+    value = nil
+    if (stmt.initializer) 
+      value = evaluate(stmt.initializer)
+    end
+
+    @environment.define(stmt.name.lexeme, value)
   end
 
   def visitBinaryExpr(expr)
@@ -104,6 +115,10 @@ class Interpreter
 
     # Unreachable
     return nil
+  end
+
+  def visitVariableExpr(expr)
+    @environment.get(expr.name)
   end
 
   def checkNumberOperand(operator, operand)

@@ -12,7 +12,7 @@ class Environment
   end
 
   def get(name)
-    if (@values.include?(name)) 
+    if (@values.include?(name.lexeme)) 
       return @values[name.lexeme]
     end
 
