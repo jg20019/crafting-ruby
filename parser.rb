@@ -38,6 +38,8 @@ class Parser
   def statement
     if (match(TokenType::PRINT)) 
       printStatement
+    elsif (match(TokenType::LEFT_BRACE))
+      Block.new(block)
     else
       expressionStatement
     end
@@ -65,6 +67,16 @@ class Parser
     expr = expression
     consume(TokenType::SEMICOLON, "Expect ';' after expression.")
     Expression.new(expr)
+  end
+
+  def block
+    statements = []
+    while (!check?(TokenType::RIGHT_BRACE) && !at_end?)
+      statements << declaration 
+    end
+
+    consume(TokenType::RIGHT_BRACE, "Expect '}' after block.")
+    statements
   end
 
   def assignment

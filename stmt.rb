@@ -1,4 +1,7 @@
 module StmtVisitor
+    def  visitBlockStmt (stmt)
+        raise NotImplementedError
+    end
     def  visitExpressionStmt (stmt)
         raise NotImplementedError
     end
@@ -7,6 +10,17 @@ module StmtVisitor
     end
     def  visitVarStmt (stmt)
         raise NotImplementedError
+    end
+end
+
+class Block
+    attr_accessor :statements
+    def initialize(statements)
+        @statements = statements
+    end
+
+    def accept(visitor)
+        visitor.visitBlockStmt(self)
     end
 end
 

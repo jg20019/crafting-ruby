@@ -62,6 +62,7 @@ defineAST(outputDir, "expr", [
 ])
 
 defineAST(outputDir, "stmt", [
+  "Block      : statements",
   "Expression : expression",
   "Print      : expression",
   "Var        : name initializer"

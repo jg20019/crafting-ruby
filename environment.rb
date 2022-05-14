@@ -2,8 +2,10 @@ require_relative 'runtime_error'
 
 class Environment
   attr_accessor :values
+  attr_reader :enclosing
 
-  def initialize()
+  def initialize(enclosing=nil)
+    @enclosing = enclosing
     @values = Hash.new
   end
 
@@ -16,6 +18,8 @@ class Environment
       return @values[name.lexeme]
     end
 
+    return @enclosing.get(name) if (@enclosing)
+
     raise LoxRuntimeError.new(name,
       "Undefined variable  '#{name.lexeme}'.")
   end
@@ -25,6 +29,8 @@ class Environment
       @values[name.lexeme] = value
       return
     end
+
+    return @enclosing.assign(name, value) if @enclosing
 
     throw LoxRuntimeError.new(name,
       "Undefined variable '#{name.lexeme}'.")

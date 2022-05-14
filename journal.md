@@ -1,5 +1,8 @@
+
 ## 05/14/2022
 * Finished 8.5 
+* Finished Chapter 8
+* [TODO] Add printing to the repl when evaluating expressions
 
 ## 05/13/2022 
 * Finished 8.3
