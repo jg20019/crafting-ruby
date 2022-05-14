@@ -1,7 +1,11 @@
+## 05/14/2022
+* Finished 8.5 
+
 ## 05/13/2022 
 * Finished 8.3
 * Fixed bug in environment 
 * Implemented assignment statements and printing variables
+* Started working on 8.4
 
 ## 05/12/2022
 * Add varDeclaration statements to parser

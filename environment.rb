@@ -19,4 +19,14 @@ class Environment
     raise LoxRuntimeError.new(name,
       "Undefined variable  '#{name.lexeme}'.")
   end
+
+  def assign(name, value)
+    if (@values.include?(name.lexeme))
+      @values[name.lexeme] = value
+      return
+    end
+
+    throw LoxRuntimeError.new(name,
+      "Undefined variable '#{name.lexeme}'.")
+  end
 end

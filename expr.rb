@@ -1,4 +1,7 @@
 module ExprVisitor
+    def  visitAssignExpr (expr)
+        raise NotImplementedError
+    end
     def  visitBinaryExpr (expr)
         raise NotImplementedError
     end
@@ -13,6 +16,18 @@ module ExprVisitor
     end
     def  visitVariableExpr (expr)
         raise NotImplementedError
+    end
+end
+
+class Assign
+    attr_accessor :name, :value
+    def initialize(name, value)
+        @name = name
+        @value = value
+    end
+
+    def accept(visitor)
+        visitor.visitAssignExpr(self)
     end
 end
 

@@ -53,6 +53,7 @@ end
 
 outputDir = ARGV[0]
 defineAST(outputDir, "expr", [
+  "Assign   : name value",
   "Binary   : left operator right",
   "Grouping : expression",
   "Literal  : value",

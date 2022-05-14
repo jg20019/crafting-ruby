@@ -67,8 +67,26 @@ class Parser
     Expression.new(expr)
   end
 
+  def assignment
+    expr = equality
+
+    if (match(TokenType::EQUAL))
+      equals = previous
+      value = assignment
+
+      if (expr.is_a?(Variable))
+        name = expr.name
+        return Assign.new(name, value)
+      end
+
+      return error(equals, "Invalid assignment target.")
+    end
+
+    expr
+  end
+
   def expression
-    equality
+    assignment
   end
 
   def equality
