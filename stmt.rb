@@ -5,6 +5,9 @@ module StmtVisitor
     def  visitExpressionStmt (stmt)
         raise NotImplementedError
     end
+    def  visitIfStmt (stmt)
+        raise NotImplementedError
+    end
     def  visitPrintStmt (stmt)
         raise NotImplementedError
     end
@@ -32,6 +35,19 @@ class Expression
 
     def accept(visitor)
         visitor.visitExpressionStmt(self)
+    end
+end
+
+class If
+    attr_accessor :condition, :thenBranch, :elseBranch
+    def initialize(condition, thenBranch, elseBranch)
+        @condition = condition
+        @thenBranch = thenBranch
+        @elseBranch = elseBranch
+    end
+
+    def accept(visitor)
+        visitor.visitIfStmt(self)
     end
 end
 

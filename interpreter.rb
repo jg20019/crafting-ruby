@@ -52,6 +52,14 @@ class Interpreter
     evaluate(stmt.expression)
   end
 
+  def visitIfStmt(stmt)
+    if (truthy?(evaluate(stmt.condition)))
+      execute(stmt.thenBranch)
+    elsif (stmt.elseBranch)
+      execute(stmt.elseBranch)
+    end
+  end
+
   def visitPrintStmt(stmt) 
     value = evaluate(stmt.expression)
     puts(value.to_s)
@@ -119,6 +127,16 @@ class Interpreter
 
   def visitLiteralExpr(expr)
     expr.value
+  end
+
+  def visitLogicalExpr(expr)
+    left = evaluate(expr.left)
+    if (expr.operator.type == TokenType::OR)
+      return left if (truthy?(left))
+    else 
+      return left unless (truthy?(left))
+    end
+    evaluate(expr.right)
   end
 
   def visitGroupingExpr(expr)

@@ -57,6 +57,7 @@ defineAST(outputDir, "expr", [
   "Binary   : left operator right",
   "Grouping : expression",
   "Literal  : value",
+  "Logical  : left operator right",
   "Unary    : operator right",
   "Variable : name",
 ])
@@ -64,6 +65,7 @@ defineAST(outputDir, "expr", [
 defineAST(outputDir, "stmt", [
   "Block      : statements",
   "Expression : expression",
+  "If         : condition thenBranch elseBranch",
   "Print      : expression",
   "Var        : name initializer"
 ])

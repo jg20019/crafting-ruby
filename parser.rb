@@ -36,13 +36,24 @@ class Parser
   end
 
   def statement
-    if (match(TokenType::PRINT)) 
-      printStatement
-    elsif (match(TokenType::LEFT_BRACE))
-      Block.new(block)
-    else
-      expressionStatement
+    return ifStatement      if (match(TokenType::IF)) 
+    return printStatement   if (match(TokenType::PRINT)) 
+    return Block.new(block) if (match(TokenType::LEFT_BRACE))
+    return expressionStatement
+  end
+
+  def ifStatement 
+    consume(TokenType::LEFT_PAREN, "Expect '(' after 'if'.")
+    condition = expression
+    consume(TokenType::RIGHT_BRACE, "Expect ')' after 'if'.")
+
+    thenBranch = statement
+    elseBranch = nil
+    if (match(TokenType::ELSE))
+      elseBranch = statement
     end
+
+    return If.new(condition, thenBranch, elseBranch)
   end
   
   def printStatement
@@ -80,7 +91,7 @@ class Parser
   end
 
   def assignment
-    expr = equality
+    expr = orExpr
 
     if (match(TokenType::EQUAL))
       equals = previous
@@ -92,6 +103,29 @@ class Parser
       end
 
       return error(equals, "Invalid assignment target.")
+    end
+    expr
+  end
+
+  def orExpr 
+    expr = andExpr
+
+    while (match(TokenType::OR))
+      operator = previous
+      right = andExpr()
+      expr = Logical.new(expr, operator, right)
+    end
+
+    expr
+  end
+
+  def andExpr
+    expr = equality
+
+    while (match(TokenType::AND))
+      operator = previous
+      right = equality
+      expr = Logical.new(expr, operator, right)
     end
 
     expr

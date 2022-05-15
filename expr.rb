@@ -11,6 +11,9 @@ module ExprVisitor
     def  visitLiteralExpr (expr)
         raise NotImplementedError
     end
+    def  visitLogicalExpr (expr)
+        raise NotImplementedError
+    end
     def  visitUnaryExpr (expr)
         raise NotImplementedError
     end
@@ -63,6 +66,19 @@ class Literal
 
     def accept(visitor)
         visitor.visitLiteralExpr(self)
+    end
+end
+
+class Logical
+    attr_accessor :left, :operator, :right
+    def initialize(left, operator, right)
+        @left = left
+        @operator = operator
+        @right = right
+    end
+
+    def accept(visitor)
+        visitor.visitLogicalExpr(self)
     end
 end
 
