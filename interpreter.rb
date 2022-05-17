@@ -74,6 +74,12 @@ class Interpreter
     @environment.define(stmt.name.lexeme, value)
   end
 
+  def visitWhileStmt(stmt)
+    while (truthy?(evaluate(stmt.condition))) 
+      execute(stmt.body)
+    end
+  end
+
   def visitAssignExpr(expr)
     value = evaluate(expr.value)
     @environment.assign(expr.name, value)

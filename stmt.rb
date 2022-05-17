@@ -14,6 +14,9 @@ module StmtVisitor
     def  visitVarStmt (stmt)
         raise NotImplementedError
     end
+    def  visitWhileStmt (stmt)
+        raise NotImplementedError
+    end
 end
 
 class Block
@@ -71,6 +74,18 @@ class Var
 
     def accept(visitor)
         visitor.visitVarStmt(self)
+    end
+end
+
+class While
+    attr_accessor :condition, :body
+    def initialize(condition, body)
+        @condition = condition
+        @body = body
+    end
+
+    def accept(visitor)
+        visitor.visitWhileStmt(self)
     end
 end
 

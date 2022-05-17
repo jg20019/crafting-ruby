@@ -38,6 +38,7 @@ class Parser
   def statement
     return ifStatement      if (match(TokenType::IF)) 
     return printStatement   if (match(TokenType::PRINT)) 
+    return whileStatement   if (match(TokenType::WHILE))
     return Block.new(block) if (match(TokenType::LEFT_BRACE))
     return expressionStatement
   end
@@ -60,6 +61,14 @@ class Parser
     value = expression
     consume(TokenType::SEMICOLON, "Expect ';' after value.")
     Print.new(value)
+  end
+
+  def whileStatement
+    consume(TokenType::LEFT_PAREN, "Expect '(' after 'while'.")
+    condition = expression
+    consume(TokenType::RIGHT_PAREN, "Expect ')' after 'condition'.")
+    body = statement
+    return While.new(condition, body)
   end
 
   def varDeclaration
