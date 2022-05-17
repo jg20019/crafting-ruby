@@ -36,11 +36,55 @@ class Parser
   end
 
   def statement
+    return forStatement     if (match(TokenType::FOR))
     return ifStatement      if (match(TokenType::IF)) 
     return printStatement   if (match(TokenType::PRINT)) 
     return whileStatement   if (match(TokenType::WHILE))
     return Block.new(block) if (match(TokenType::LEFT_BRACE))
     return expressionStatement
+  end
+
+  def forStatement
+    consume(TokenType::LEFT_PAREN, "Expect '(' after 'for'.")
+
+    initialize = nil
+    if (match(TokenType::SEMICOLON)) 
+        initializer = nil
+    elsif (match(TokenType::VAR)) 
+        initializer = varDeclaration
+    else 
+        initializer = expressionStatement
+    end
+
+    condition = nil
+    if (!check?(TokenType::SEMICOLON)) 
+      condition = expression
+    end
+    consume(TokenType::SEMICOLON, "Expect ';' after loop condition.")
+
+    increment = nil
+    if (!check?(TokenType::RIGHT_PAREN))
+      increment = expression
+    end
+    consume(TokenType::RIGHT_PAREN, "Expect ')' after for clauses.")
+
+    body = statement
+
+    if (increment)
+      body = Block.new([body, Expression.new(increment)])
+    end
+
+    if (condition == nil) 
+      condition = Literal.new(true)
+    end
+
+    body = While.new(condition, body)
+
+    if (initializer)
+      body = Block.new([initializer, body])
+    end
+
+    return body
   end
 
   def ifStatement 
