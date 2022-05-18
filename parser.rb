@@ -234,7 +234,38 @@ class Parser
       right = unary
       return Unary.new(operator, right)
     end
-    return primary
+    return call
+  end
+
+  def finishCall(callee)
+    arguments = []
+    if (!check?(TokenType::RIGHT_PAREN))
+      arguments << expression
+      while (match(TokenType::COMMA))
+        if (arguments.length >= 255)
+          error(peek, "Can't have more than 255 arguments.")
+        end
+        arguments << expression
+      end
+    end
+
+    paren = consume(TokenType::RIGHT_PAREN,
+                    "Expect ')' after arguments.")
+
+    Call.new(callee, paren, arguments)
+  end
+
+  def call
+    expr = primary
+    while (true) 
+      if (match(TokenType::LEFT_PAREN))
+        expr = finishCall(expr)
+      else
+        break
+      end
+    end
+
+    expr
   end
   
   def primary

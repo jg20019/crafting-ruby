@@ -5,6 +5,9 @@ module ExprVisitor
     def  visitBinaryExpr (expr)
         raise NotImplementedError
     end
+    def  visitCallExpr (expr)
+        raise NotImplementedError
+    end
     def  visitGroupingExpr (expr)
         raise NotImplementedError
     end
@@ -44,6 +47,19 @@ class Binary
 
     def accept(visitor)
         visitor.visitBinaryExpr(self)
+    end
+end
+
+class Call
+    attr_accessor :callee, :paren, :arguments
+    def initialize(callee, paren, arguments)
+        @callee = callee
+        @paren = paren
+        @arguments = arguments
+    end
+
+    def accept(visitor)
+        visitor.visitCallExpr(self)
     end
 end
 

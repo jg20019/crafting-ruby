@@ -1,3 +1,6 @@
+## 05/17/2022
+* Completed 10.1
+
 ## 05/16/2022 
 * Finsihed 9.4
 * Finished Chapter 9

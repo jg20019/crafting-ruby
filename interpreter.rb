@@ -131,6 +131,27 @@ class Interpreter
     # Unreachable.
   end
 
+  def visitCallExpr(expr)
+    callee = evaluate(expr.callee)
+
+    if (callee.method_defined?(:call))
+      raise LoxRuntimeError(expr.paren,
+        "Can only call functions and classes.")
+    end
+
+    arguments = []
+    expr.arguments.each do |argument|
+      arguments << evaluate(argument)
+    end
+
+    function = callee
+    if (arguments.length != function.arity)
+      raise LoxRuntimeError(expr.paren, 
+          "Expected #{function.arity} arguments but got #{arguments.length}.")
+    end
+    function.call(self, arguments)
+  end
+
   def visitLiteralExpr(expr)
     expr.value
   end
