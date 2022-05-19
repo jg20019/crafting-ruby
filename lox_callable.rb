@@ -1,10 +1,20 @@
 
-module LoxCallable
+class LoxCallable
+  def initialize(arity, procedure, str)
+    @arity = arity
+    @proc = procedure
+    @str = str
+  end
+
   def arity
-    raise NotImplementedError
+    @arity
   end
 
   def call(interpreter, arguments)
-    raise NotImplementedError
+    @proc.call(interpreter, arguments)
+  end
+
+  def to_s
+    @str
   end
 end

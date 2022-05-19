@@ -10,7 +10,22 @@ class Interpreter
 
   def initialize(lox)
     @lox = lox
-    @environment = Environment.new
+    @globals = Environment.new
+    @environment = @globals
+
+    @globals.define("clock", Class.new do 
+      def arity
+        0
+      end
+
+      def call(interpreter, arguments)
+        Time.now.strftime('%s%L').to_i / 1000.0
+      end
+
+      def to_s
+        "<native fn>" 
+      end
+    end)
   end
 
   def interpret(statements)
