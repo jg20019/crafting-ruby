@@ -1,5 +1,6 @@
 ## 05/18/2022
 * Completed 10.2
+* Started adding function declaration syntax
 
 ## 05/17/2022
 * Completed 10.1

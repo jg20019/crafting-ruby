@@ -66,6 +66,7 @@ defineAST(outputDir, "expr", [
 defineAST(outputDir, "stmt", [
   "Block      : statements",
   "Expression : expression",
+  "Function   : name params body",
   "If         : condition thenBranch elseBranch",
   "Print      : expression",
   "Var        : name initializer",

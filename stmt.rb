@@ -5,6 +5,9 @@ module StmtVisitor
     def  visitExpressionStmt (stmt)
         raise NotImplementedError
     end
+    def  visitFunctionStmt (stmt)
+        raise NotImplementedError
+    end
     def  visitIfStmt (stmt)
         raise NotImplementedError
     end
@@ -38,6 +41,19 @@ class Expression
 
     def accept(visitor)
         visitor.visitExpressionStmt(self)
+    end
+end
+
+class Function
+    attr_accessor :name, :params, :body
+    def initialize(name, params, body)
+        @name = name
+        @params = params
+        @body = body
+    end
+
+    def accept(visitor)
+        visitor.visitFunctionStmt(self)
     end
 end
 
