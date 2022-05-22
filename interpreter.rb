@@ -3,10 +3,13 @@ require_relative "./token"
 require_relative "./expr"
 require_relative "./runtime_error"
 require_relative "./environment"
+require_relative "./lox_function"
 
 class Interpreter
   include ExprVisitor
   include StmtVisitor 
+
+  attr_reader :globals
 
   def initialize(lox)
     @lox = lox
@@ -65,6 +68,11 @@ class Interpreter
 
   def visitExpressionStmt(stmt)
     evaluate(stmt.expression)
+  end
+
+  def visitFunctionStmt(stmt)
+    function = LoxFunction.new(stmt)
+    @environment.define(stmt.name.lexeme, function)
   end
 
   def visitIfStmt(stmt)
@@ -149,8 +157,8 @@ class Interpreter
   def visitCallExpr(expr)
     callee = evaluate(expr.callee)
 
-    if (callee.method_defined?(:call))
-      raise LoxRuntimeError(expr.paren,
+    if (!callee.respond_to?(:call))
+      raise LoxRuntimeError.new(expr.paren,
         "Can only call functions and classes.")
     end
 
@@ -161,7 +169,7 @@ class Interpreter
 
     function = callee
     if (arguments.length != function.arity)
-      raise LoxRuntimeError(expr.paren, 
+      raise LoxRuntimeError.new(expr.paren, 
           "Expected #{function.arity} arguments but got #{arguments.length}.")
     end
     function.call(self, arguments)

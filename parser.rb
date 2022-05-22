@@ -137,13 +137,13 @@ class Parser
     consume(TokenType::LEFT_PAREN, "Expect '(' after #{kind} name.") 
     parameters = []
     if (!check?(TokenType::RIGHT_PAREN))
-      if (parameters.length) >= 255)
+      if (parameters.length >= 255)
         error(peek, "Cant' have more than 255 parameters")
       end
       parameters << consume(TokenType::IDENTIFIER, "Expect parameter name.")
 
       while (match(TokenType::COMMA))
-        if (parameters.length) >= 255)
+        if (parameters.length >= 255)
           error(peek, "Cant' have more than 255 parameters")
         end
         parameters << consume(TokenType::IDENTIFIER, "Expect parameter name.")
