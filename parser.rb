@@ -25,9 +25,8 @@ class Parser
 
   def declaration
     begin
-      if (match(TokenType::VAR))
-        return varDeclaration
-      end
+      return function("function") if (match(TokenType::FUN))
+      return varDeclaration if (match(TokenType::VAR))
       return statement
     rescue ParseError
       synchronize
@@ -131,6 +130,31 @@ class Parser
     expr = expression
     consume(TokenType::SEMICOLON, "Expect ';' after expression.")
     Expression.new(expr)
+  end
+
+  def function(kind) 
+    name = consume(TokenType::IDENTIFIER, "Expect #{kind} name.")
+    consume(TokenType::LEFT_PAREN, "Expect '(' after #{kind} name.") 
+    parameters = []
+    if (!check?(TokenType::RIGHT_PAREN))
+      if (parameters.length) >= 255)
+        error(peek, "Cant' have more than 255 parameters")
+      end
+      parameters << consume(TokenType::IDENTIFIER, "Expect parameter name.")
+
+      while (match(TokenType::COMMA))
+        if (parameters.length) >= 255)
+          error(peek, "Cant' have more than 255 parameters")
+        end
+        parameters << consume(TokenType::IDENTIFIER, "Expect parameter name.")
+      end
+    end
+
+    consume(TokenType::RIGHT_PAREN, "Expect ')' after parameters.")
+
+    consume(TokenType::LEFT_BRACE, "Expect '{' before #{kind} body.")
+    body = block
+    return Function.new(name, parameters, body)
   end
 
   def block
